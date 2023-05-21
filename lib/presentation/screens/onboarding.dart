@@ -1,9 +1,10 @@
-import 'package:cindy_radio/screens/playing.dart';
+import 'package:cindy_radio/presentation/screens/home_screen.dart';
+import 'package:cindy_radio/presentation/screens/playing.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class Onboarding extends StatelessWidget {
-  const Onboarding({Key key}) : super(key: key);
+  const Onboarding({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,15 +17,14 @@ class Onboarding extends StatelessWidget {
               image: DecorationImage(
                   image: AssetImage('asset/image/live_radio.png'),
                   fit: BoxFit.fill)),
-          // ignore: deprecated_member_use
           child: Stack(
             children: [
               GestureDetector(
                 onTap: () => Navigator.pushReplacement(context,
-                    CupertinoPageRoute(builder: (context) => Playing())),
+                    CupertinoPageRoute(builder: (context) => HomeScreen())),
                 child: Container(
                   alignment: Alignment.center,
-                  margin: EdgeInsets.all(9),
+                  margin: EdgeInsets.fromLTRB(9, 20, 15, 30),
                   decoration: BoxDecoration(
                       gradient: LinearGradient(colors: [
                         Color(0xfffd8918),
@@ -42,13 +42,6 @@ class Onboarding extends StatelessWidget {
               )
             ],
           )
-          // FlatButton(
-          //   onPressed: () {},
-          //   child: Text(
-          //     'Signup',
-          //     style: TextStyle(fontSize: 40),
-          //   ),
-          // ),
           ),
     );
   }
