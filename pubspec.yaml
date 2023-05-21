@@ -10,8 +10,9 @@ dependencies:
   flutter:
     sdk: flutter
   dio: ^5.1.2
-  just_audio: ^0.9.24
-  audio_video_progress_bar: ^1.0.1
+  audio_waveforms: ^1.0.4
+  just_audio: ^0.9.33
+  audio_wave: ^0.1.5
   flutter_riverpod: ^2.3.6
   hooks_riverpod: ^2.3.6
 

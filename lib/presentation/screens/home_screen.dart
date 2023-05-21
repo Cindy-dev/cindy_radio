@@ -1,10 +1,17 @@
 import 'package:cindy_radio/logic/radio_vm.dart';
+import 'package:cindy_radio/presentation/screens/playing.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
@@ -23,7 +30,7 @@ class HomeScreen extends StatelessWidget {
                     color: Colors.white,
                     fontWeight: FontWeight.w700),
               ),
-              SizedBox(height: deviceSize.height / 15),
+              SizedBox(height: deviceSize.height / 30),
               Consumer(builder: (_, ref, child) {
                 final vm = ref.watch(radioStationsVm);
                 return vm.when(
@@ -39,51 +46,71 @@ class HomeScreen extends StatelessWidget {
                                     mainAxisSpacing: 20),
                             itemCount: data.length,
                             itemBuilder: (context, i) {
-                              return Stack(
-                                children: [
-                                  data[i].favicon!.isEmpty
-                                      ? Stack(
-                                          children: [
-                                            Container(
-                                              decoration: BoxDecoration(
-                                                color: Colors.grey,
-                                                borderRadius:
-                                                    BorderRadius.circular(20),
+                              return GestureDetector(
+                                onTap: (){
+
+                                  Navigator.push(context,
+                                    CupertinoPageRoute(builder: (context) {
+                                  return PlayingScreen(
+                                    radioModel: data[i],
+                                  );
+                                }));},
+                                child: Container(
+                                  padding: EdgeInsets.all(15),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white.withOpacity(0.6),
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                  child: Stack(
+                                    children: [
+                                      data[i].favicon!.isEmpty
+                                          ? Stack(
+                                              children: [
+                                                Container(
+                                                  decoration: BoxDecoration(
+                                                    color: Colors.grey,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            20),
+                                                  ),
+                                                ),
+                                                Positioned(
+                                                    top: 120,
+                                                    left: 10,
+                                                    bottom: 100,
+                                                    child: Text(
+                                                      "Image Unavailable",
+                                                      style: TextStyle(
+                                                          fontSize: 15),
+                                                    ))
+                                              ],
+                                            )
+                                          : Container(
+                                              width: deviceSize.width / 1.5,
+                                              margin: EdgeInsets.only(
+                                                  bottom: 0, top: 20),
+                                              child: Image.network(
+                                                data[i].favicon!,
+                                                fit: BoxFit.contain,
                                               ),
                                             ),
-                                            Positioned(
-                                                top: 120,
-                                                bottom: 100,
-                                                left: 30,
-                                                right: 30,
-                                                child:
-                                                    Text("Image Unavailable"))
-                                          ],
-                                        )
-                                      : Container(
-                                          height: deviceSize.height / 3,
-                                          padding: EdgeInsets.all(15),
-                                          decoration: BoxDecoration(
-                                            color:
-                                                Colors.white.withOpacity(0.6),
-                                            borderRadius:
-                                                BorderRadius.circular(20),
-                                          ),
-                                          child: Image.network(
-                                            data[i].favicon!,
-                                            fit: BoxFit.contain,
-                                          ),
-                                        ),
-                                  Positioned(
-                                      bottom: 20,
-                                      left: 30,
-                                      child: Text(
-                                        "Hello",
-                                        style: TextStyle(
-                                            fontSize: 25,
-                                            fontWeight: FontWeight.w700),
-                                      )),
-                                ],
+                                      Positioned(
+                                          left: 10,
+                                          bottom: 0,
+                                          right: 10,
+                                          child: Container(
+                                            alignment: Alignment.center,
+                                            child: Text(
+                                              data[i].name!,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.w700),
+                                            ),
+                                          )),
+                                    ],
+                                  ),
+                                ),
                               );
                             }),
                       );
