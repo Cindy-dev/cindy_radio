@@ -1,10 +1,4 @@
-import 'package:cindy_radio/logic/radio_vm.dart';
-import 'package:cindy_radio/presentation/screens/playing.dart';
-import 'package:cindy_radio/presentation/widget/sppin_wave.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../app.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -36,11 +30,11 @@ class HomeScreen extends ConsumerWidget {
                 vm.when(
                     error: (e, s) => Text(e.toString()),
                     loading: () => Expanded(
-                      child: Center(
+                          child: Center(
                               child: SpinKitWaveSpinner(
                             color: Color(0xfffd8b19),
                           )),
-                    ),
+                        ),
                     data: (data) {
                       return Expanded(
                         child: GridView.builder(
@@ -78,7 +72,8 @@ class HomeScreen extends ConsumerWidget {
                                                   decoration: BoxDecoration(
                                                     color: Colors.grey,
                                                     borderRadius:
-                                                        BorderRadius.circular(20),
+                                                        BorderRadius.circular(
+                                                            20),
                                                   ),
                                                 ),
                                                 Positioned(
@@ -87,8 +82,8 @@ class HomeScreen extends ConsumerWidget {
                                                     bottom: 100,
                                                     child: Text(
                                                       "Image Unavailable",
-                                                      style:
-                                                          TextStyle(fontSize: 15),
+                                                      style: TextStyle(
+                                                          fontSize: 15),
                                                     ))
                                               ],
                                             )
@@ -96,6 +91,8 @@ class HomeScreen extends ConsumerWidget {
                                               width: deviceSize.width / 1.5,
                                               margin: EdgeInsets.only(
                                                   bottom: 0, top: 20),
+
+                                                  // using cache network image builder instead
                                               child: Image.network(
                                                 data[i].favicon!,
                                                 fit: BoxFit.contain,

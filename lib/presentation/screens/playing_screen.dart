@@ -1,12 +1,8 @@
-import 'package:cindy_radio/data/model/radio_model.dart';
-import 'package:cindy_radio/presentation/widget/audio_control_buttons.dart';
-import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import '../../logic/player_vm.dart';
+import '../../app.dart';
 
 class PlayingScreen extends StatefulHookConsumerWidget {
   final List<RadioModel> radioList;
-  int currentIndex;
+  final int currentIndex;
 
   PlayingScreen({
     Key? key,
@@ -24,12 +20,14 @@ class _PlayingScreenState extends ConsumerState<PlayingScreen> {
   @override
   void initState() {
     super.initState();
+
     _playingViewModel = ref.read(playingViewModelProvider);
     _playingViewModel?.playAudio(widget.radioList[widget.currentIndex].url!);
   }
 
   @override
   void dispose() {
+    // so i am thinking the .autoDispose from the provider could do this
     _playingViewModel?.dispose();
     super.dispose();
   }

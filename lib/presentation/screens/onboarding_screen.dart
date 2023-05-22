@@ -1,5 +1,6 @@
 import 'package:cindy_radio/presentation/screens/home_screen.dart';
-import 'package:cindy_radio/presentation/screens/playing.dart';
+import 'package:cindy_radio/presentation/screens/new_home_screen.dart';
+import 'package:cindy_radio/presentation/screens/playing_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -23,8 +24,12 @@ class Onboarding extends StatelessWidget {
           bottom: 0,
           right: 10,
           child: GestureDetector(
-            onTap: () => Navigator.pushReplacement(context,
-                CupertinoPageRoute(builder: (context) => HomeScreen())),
+            onTap: () => Navigator.pushReplacement(
+              context,
+              CupertinoPageRoute(builder: (context) => NewHomeScreen()
+                  // HomeScreen(),
+                  ),
+            ),
             child: Container(
               alignment: Alignment.center,
               margin: EdgeInsets.fromLTRB(
