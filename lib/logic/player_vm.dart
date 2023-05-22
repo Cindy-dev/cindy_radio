@@ -1,64 +1,59 @@
+import 'package:cindy_radio/data/model/radio_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:just_audio/just_audio.dart';
 
+final valueStateProvider =
+    StateProvider.family<int, int>((ref, index) => index);
+
 class PlayerVm {
   final Ref ref;
-  final AudioPlayer _audioPlayer;
-  final String audioUrls;
-  int currentIndex;
-  PlayerVm(this.ref, this.audioUrls)
-      : _audioPlayer = AudioPlayer(),
-        currentIndex = 0;
-  AudioPlayer get audioPlayer => _audioPlayer;
+  late AudioPlayer audioPlayer;
+  PlayerVm(this.ref, [AudioPlayer? audioPlayer])
+      : this.audioPlayer = audioPlayer ?? AudioPlayer();
 
-  Future<void> playAudio(String url) async {
-    await _audioPlayer.setUrl(url);
-    await _audioPlayer.play();
+  Future<void> playAudio(String audioUrl) async {
+    await audioPlayer.setUrl(audioUrl);
+    await audioPlayer.play();
   }
 
   Future<void> pauseAudio() async {
-    await _audioPlayer.pause();
+    await audioPlayer.pause();
   }
 
   Future<void> stopAudio() async {
-    await _audioPlayer.stop();
+    await audioPlayer.stop();
   }
 
-  void goToNextAudio(radioList, currentInde, url) async {
-    // currentIndex++;
-    // if (currentIndex >= audioUrls.length) {
-    //   currentIndex = 0;
-    // }
-
-    if (currentInde < radioList.length - 1) {
-      currentInde++;
+  void goToNextAudio(
+      {required List<RadioModel> radioList,
+      required int playingIndex,
+      required AudioPlayer initializedPlayer}) async {
+    if (playingIndex < radioList.length - 1) {
+      playingIndex++;
     } else {
-      currentInde = 0;
+      playingIndex = 0;
     }
-    print(currentInde);
-   _audioPlayer.stop();
-    await _audioPlayer.setUrl(url);
-    _audioPlayer.play();
+    initializedPlayer.setUrl(radioList[playingIndex].url!);
+    initializedPlayer.play();
   }
 
-  void goToPreviousAudio() {
-    currentIndex--;
-    if (currentIndex < 0) {
-      currentIndex = audioUrls.length - 1;
+  void goToPreviousAudio(
+      {required int playingIndex,
+      required List<RadioModel> radioList,
+      required AudioPlayer initializedPlayer}) {
+    if (playingIndex > 0) {
+      playingIndex--;
+    } else {
+      throw Exception("Error");
     }
+    initializedPlayer.setUrl(radioList[playingIndex].url!);
+    initializedPlayer.play();
   }
 
   void dispose() async {
-    await _audioPlayer.dispose();
+    await audioPlayer.dispose();
   }
 }
 
 final playingViewModelProvider =
-    Provider.family.autoDispose<PlayerVm, String>((ref, audioUrl) {
-  final playerVm = PlayerVm(ref, audioUrl);
-  ref.onDispose(() {
-    playerVm._audioPlayer.dispose();
-  });
-
-  return playerVm;
-});
+    Provider.autoDispose<PlayerVm>((ref) => PlayerVm(ref));

@@ -2,7 +2,7 @@ import 'package:cindy_radio/data/model/radio_model.dart';
 import 'package:cindy_radio/presentation/widget/audio_control_buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:just_audio/just_audio.dart';
+import '../../logic/player_vm.dart';
 
 class PlayingScreen extends StatefulHookConsumerWidget {
   final List<RadioModel> radioList;
@@ -19,68 +19,25 @@ class PlayingScreen extends StatefulHookConsumerWidget {
 }
 
 class _PlayingScreenState extends ConsumerState<PlayingScreen> {
-  late AudioPlayer player;
+  PlayerVm? _playingViewModel;
 
   @override
   void initState() {
     super.initState();
-    _initAudioPlayer();
-  }
-
-  Future<void> _initAudioPlayer() async {
-    player = AudioPlayer();
-    await player.setUrl(widget.radioList[widget.currentIndex].url!);
-    player.play();
-
-  }
-
-  void playPreviousStation() {
-    setState(() {
-      if (widget.currentIndex > 0) {
-        widget.currentIndex--;
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              'No previous audio',
-              textAlign: TextAlign.center,
-            ),
-          ),
-        );
-        //widget.currentIndex = widget.radioList.length - 1;
-      }
-      //player.stop();
-      playCurrentStation();
-    });
-  }
-
-  void playNextStation() {
-    setState(() {
-      if (widget.currentIndex < widget.radioList.length - 1) {
-        widget.currentIndex++;
-      } else {
-        widget.currentIndex = 0;
-      }
-      //player.stop();
-      playCurrentStation();
-    });
-  }
-
-  void playCurrentStation() async {
-    final audioUrl = widget.radioList[widget.currentIndex].url!;
-    await player.setUrl(audioUrl);
-    player.play();
+    _playingViewModel = ref.read(playingViewModelProvider);
+    _playingViewModel?.playAudio(widget.radioList[widget.currentIndex].url!);
   }
 
   @override
   void dispose() {
-    player.dispose();
+    _playingViewModel?.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final currentStation = widget.radioList[widget.currentIndex];
+    final value = ref.watch(valueStateProvider(widget.currentIndex));
+    final currentStation = widget.radioList[value];
     final deviceSize = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Color(0xff1f2029),
@@ -92,7 +49,13 @@ class _PlayingScreenState extends ConsumerState<PlayingScreen> {
               Row(
                 children: [
                   GestureDetector(
-                    onTap: () => Navigator.pop(context),
+                    onTap: () {
+                      ref
+                          .read(
+                              valueStateProvider(widget.currentIndex).notifier)
+                          .state = widget.currentIndex;
+                      Navigator.pop(context);
+                    },
                     child: Icon(
                       Icons.arrow_back,
                       color: Color(0xff58585a),
@@ -165,9 +128,40 @@ class _PlayingScreenState extends ConsumerState<PlayingScreen> {
               ),
               Spacer(),
               AudioControlButtons(
-                player: player,
-                nextAudio: playNextStation,
-                previousAudio: playPreviousStation,
+                player: _playingViewModel!.audioPlayer,
+                nextAudio: () {
+                  ref
+                      .read(valueStateProvider(widget.currentIndex).notifier)
+                      .state++;
+
+                  ref.read(playingViewModelProvider).goToNextAudio(
+                        radioList: widget.radioList,
+                        playingIndex: value,
+                        initializedPlayer: _playingViewModel!.audioPlayer,
+                      );
+                },
+                previousAudio: () {
+                  if (value > 0) {
+                    ref
+                        .read(valueStateProvider(widget.currentIndex).notifier)
+                        .state--;
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                          'No previous audio',
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    );
+                  }
+
+                  ref.read(playingViewModelProvider).goToPreviousAudio(
+                        playingIndex: value,
+                        radioList: widget.radioList,
+                        initializedPlayer: _playingViewModel!.audioPlayer,
+                      );
+                },
               ),
             ],
           ),

@@ -16,8 +16,6 @@ dependencies:
   flutter_riverpod: ^2.3.6
   hooks_riverpod: ^2.3.6
 
-
-
   cupertino_icons: ^1.0.2
 
 dev_dependencies:
@@ -31,6 +29,7 @@ flutter:
 
   assets:
     - asset/image/
+    - asset/image/screenshot
   #   - images/a_dot_ham.jpeg
 
   # fonts:

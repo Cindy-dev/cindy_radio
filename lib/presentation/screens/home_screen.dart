@@ -1,5 +1,6 @@
 import 'package:cindy_radio/logic/radio_vm.dart';
 import 'package:cindy_radio/presentation/screens/playing.dart';
+import 'package:cindy_radio/presentation/widget/sppin_wave.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -31,7 +32,12 @@ class HomeScreen extends ConsumerWidget {
               SizedBox(height: deviceSize.height / 30),
               vm.when(
                   error: (e, s) => Text(e.toString()),
-                  loading: () => Center(child: CircularProgressIndicator()),
+                  loading: () => Expanded(
+                    child: Center(
+                            child: SpinKitWaveSpinner(
+                          color: Color(0xfffd8b19),
+                        )),
+                  ),
                   data: (data) {
                     return Expanded(
                       child: GridView.builder(
@@ -46,8 +52,6 @@ class HomeScreen extends ConsumerWidget {
                           itemBuilder: (context, i) {
                             return GestureDetector(
                               onTap: () {
-                                ref.read(currentIndexProvider.notifier).state =
-                                    i;
                                 Navigator.push(context,
                                     CupertinoPageRoute(builder: (context) {
                                   return PlayingScreen(
