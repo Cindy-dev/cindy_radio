@@ -1,32 +1,74 @@
-
 import 'package:cindy_radio/data/model/radio_model.dart';
 import 'package:cindy_radio/presentation/widget/audio_control_buttons.dart';
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:just_audio/just_audio.dart';
 
-class PlayingScreen extends StatefulWidget {
-  final RadioModel radioModel;
+class PlayingScreen extends StatefulHookConsumerWidget {
+  final List<RadioModel> radioList;
+  int currentIndex;
 
-  const PlayingScreen({
+  PlayingScreen({
     Key? key,
-    required this.radioModel,
+    required this.radioList,
+    required this.currentIndex,
   }) : super(key: key);
 
   @override
-  State<PlayingScreen> createState() => _PlayingScreenState();
+  ConsumerState<PlayingScreen> createState() => _PlayingScreenState();
 }
 
-class _PlayingScreenState extends State<PlayingScreen> {
+class _PlayingScreenState extends ConsumerState<PlayingScreen> {
   late AudioPlayer player;
+
   @override
   void initState() {
     super.initState();
-    player = AudioPlayer();
     _initAudioPlayer();
   }
 
   Future<void> _initAudioPlayer() async {
-    await player.setUrl(widget.radioModel.url!);
+    player = AudioPlayer();
+    await player.setUrl(widget.radioList[widget.currentIndex].url!);
+    player.play();
+
+  }
+
+  void playPreviousStation() {
+    setState(() {
+      if (widget.currentIndex > 0) {
+        widget.currentIndex--;
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              'No previous audio',
+              textAlign: TextAlign.center,
+            ),
+          ),
+        );
+        //widget.currentIndex = widget.radioList.length - 1;
+      }
+      //player.stop();
+      playCurrentStation();
+    });
+  }
+
+  void playNextStation() {
+    setState(() {
+      if (widget.currentIndex < widget.radioList.length - 1) {
+        widget.currentIndex++;
+      } else {
+        widget.currentIndex = 0;
+      }
+      //player.stop();
+      playCurrentStation();
+    });
+  }
+
+  void playCurrentStation() async {
+    final audioUrl = widget.radioList[widget.currentIndex].url!;
+    await player.setUrl(audioUrl);
     player.play();
   }
 
@@ -38,6 +80,7 @@ class _PlayingScreenState extends State<PlayingScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final currentStation = widget.radioList[widget.currentIndex];
     final deviceSize = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Color(0xff1f2029),
@@ -64,7 +107,7 @@ class _PlayingScreenState extends State<PlayingScreen> {
                   ),
                 ],
               ),
-              widget.radioModel.favicon!.isEmpty
+              currentStation.favicon!.isEmpty
                   ? Stack(
                       children: [
                         Container(
@@ -73,7 +116,7 @@ class _PlayingScreenState extends State<PlayingScreen> {
                           height: deviceSize.height / 2.5,
                           width: deviceSize.width / 1.5,
                           decoration: BoxDecoration(
-                            color: Colors.grey,
+                            color: Color(0xff58585a),
                             borderRadius: BorderRadius.circular(20),
                           ),
                         ),
@@ -99,11 +142,33 @@ class _PlayingScreenState extends State<PlayingScreen> {
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: Image.network(
-                        widget.radioModel.favicon!,
+                        currentStation.favicon!,
                         fit: BoxFit.contain,
                       )),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 20),
+                child: Text(
+                  currentStation.country ?? "ndd",
+                  style: TextStyle(
+                      color: Color(0xff58585a),
+                      fontSize: 20,
+                      fontWeight: FontWeight.w700),
+                ),
+              ),
+              Text(
+                currentStation.name!,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 25,
+                    fontWeight: FontWeight.w700),
+              ),
               Spacer(),
-              AudioControlButtons(player),
+              AudioControlButtons(
+                player: player,
+                nextAudio: playNextStation,
+                previousAudio: playPreviousStation,
+              ),
             ],
           ),
         ),
