@@ -1,6 +1,4 @@
-import 'package:cindy_radio/presentation/screens/onboarding.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'app.dart';
 
 void main() {
   runApp(ProviderScope(child: MyApp()));
