@@ -12,7 +12,6 @@ ThemeData _buildLightTheme() {
   const Color primaryColor = _Colors.primaryColor;
   const Color primaryColorLight = _Colors.primaryColorLight;
   const Color secondaryColor = _Colors.secondaryColor;
-  const Color gray = _Colors.gray;
   final ColorScheme colorScheme = const ColorScheme.light().copyWith(
     primary: primaryColor,
     secondary: secondaryColor,
@@ -21,9 +20,9 @@ ThemeData _buildLightTheme() {
   final themeData = ThemeData(
     // brightness: Brightness.dark,
     primaryColor: primaryColor,
-    shadowColor: gray,
-    primaryColorDark: primaryColorLight,
-    scaffoldBackgroundColor: _Colors.white,
+    shadowColor: _Colors.gray,
+    primaryColorLight: primaryColorLight,
+    scaffoldBackgroundColor: _Colors.secondaryColor,
     cardColor: _Colors.white,
     appBarTheme: const AppBarTheme(
       backgroundColor: _Colors.white,

@@ -1,6 +1,6 @@
 import 'package:cindy_radio/logic/radio_vm.dart';
 import 'package:cindy_radio/presentation/screens/playing.dart';
-import 'package:cindy_radio/presentation/widget/sppin_wave.dart';
+import 'package:cindy_radio/presentation/widget/spin_wave.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

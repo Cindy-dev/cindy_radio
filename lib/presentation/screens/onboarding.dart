@@ -1,50 +1,50 @@
-import 'package:cindy_radio/presentation/screens/home_screen.dart';
+import 'package:cindy_radio/utils/theme/deviceSize.dart';
+import 'package:cindy_radio/utils/theme/theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class Onboarding extends StatelessWidget {
-  const Onboarding({Key? key}) : super(key: key);
+import 'home_screen.dart';
+
+class OnboardingScreen extends StatelessWidget {
+  const OnboardingScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Stack(
-      children: [
-        Container(
-            alignment: Alignment.bottomRight,
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
-            decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: AssetImage('asset/image/live_radio.png'),
-                    fit: BoxFit.fill))),
-        Positioned(
-          bottom: 0,
-          right: 10,
-          child: GestureDetector(
+      backgroundColor: appTheme.scaffoldBackgroundColor,
+      body: Column(
+        children: [
+          Spacer(),
+          Flexible(
+            flex: 2,
+            child: Align(
+                alignment: Alignment.center,
+                child: Image.asset("asset/image/radio.png")),
+          ),
+          Spacer(),
+          GestureDetector(
             onTap: () => Navigator.pushReplacement(context,
                 CupertinoPageRoute(builder: (context) => HomeScreen())),
             child: Container(
               alignment: Alignment.center,
-              margin: EdgeInsets.fromLTRB(
-                  9, 0, 15, MediaQuery.of(context).size.height / 35),
+              margin:
+                  EdgeInsets.symmetric(horizontal: context.deviceWidth() / 15),
+              width: context.deviceWidth(),
+              padding: EdgeInsets.symmetric(vertical: 21),
               decoration: BoxDecoration(
-                  gradient: LinearGradient(colors: [
-                    Color(0xfffd8918),
-                    Color(0xfffeb322),
-                    Color(0xfffd8b19)
-                  ]),
-                  borderRadius: BorderRadius.circular(8)),
-              height: 50,
-              width: MediaQuery.of(context).size.width * .35,
+                  borderRadius: BorderRadius.circular(6),
+                  color: appTheme.primaryColor),
               child: Text(
-                'Sign up',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                "Get Started",
+                style: AppTextStyles.buttonText,
               ),
             ),
           ),
-        )
-      ],
-    ));
+          SizedBox(
+            height: context.deviceHeight() / 27,
+          )
+        ],
+      ),
+    );
   }
 }
