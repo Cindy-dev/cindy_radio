@@ -9,11 +9,17 @@ class ExploreScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final vm = ref.watch(tagsProvider);
+    final radioModels = ref.watch(radioStationsVm).value ?? [];
+
     return ListView.builder(
-      shrinkWrap: true,
+        shrinkWrap: true,
         itemCount: vm.length,
-        itemBuilder: (context, i){
-      return Text(vm[i], style: AppTextStyles.displayLarge);
-    });
+        itemBuilder: (context, i) {
+          final tag = vm[i];
+          return GestureDetector(
+              onTap: () =>
+                  ref.read(tagClickShowListProvider(Tag(radioModels, tag))),
+              child: Text(vm[i], style: AppTextStyles.displayLarge));
+        });
   }
 }
