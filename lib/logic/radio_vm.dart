@@ -12,11 +12,20 @@ class RadioVm {
     final stations = await ref.read(radioServiceProvider).fetchStations();
     return stations;
   }
+
+
 }
 
 
 final radioStationsVm =
-    FutureProvider.autoDispose((ref) => RadioVm(ref).fetchStations());
+    FutureProvider((ref) => RadioVm(ref).fetchStations());
 
+
+
+final tagsProvider = Provider<List<String>>((ref) {
+  final radioModels = ref.watch(radioStationsVm).value ?? [];
+  final extractTags = ref.read(radioServiceProvider).extractTags(radioModels);
+  return extractTags;
+});
 
 final currentIndexProvider = StateProvider<int>((ref) => 0);

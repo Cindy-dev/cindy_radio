@@ -1,3 +1,4 @@
+import 'package:cindy_radio/presentation/screens/explore_screen.dart';
 import 'package:cindy_radio/presentation/screens/home_screen.dart';
 import 'package:cindy_radio/utils/theme/theme.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +14,7 @@ class _NavBarScreenState extends State<NavBarScreen> {
   int _selectedIndex = 0;
   static final List<Widget> _screenOptions = <Widget>[
     const HomeScreen(),
-    const HomeScreen(),
+    const ExploreScreen(),
     const HomeScreen()
   ];
   void _onItemTapped(int index) {

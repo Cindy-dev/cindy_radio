@@ -1,10 +1,8 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:cindy_radio/presentation/screens/nav_bar_screen.dart';
 import 'package:cindy_radio/utils/theme/deviceSize.dart';
 import 'package:cindy_radio/utils/theme/theme.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-
-import 'home_screen.dart';
 
 class OnboardingScreen extends StatelessWidget {
   const OnboardingScreen({Key? key}) : super(key: key);

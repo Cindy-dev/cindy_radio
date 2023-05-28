@@ -36,11 +36,11 @@ class HomeScreen extends ConsumerWidget {
                 vm.when(
                     error: (e, s) => Text(e.toString()),
                     loading: () => Expanded(
-                      child: Center(
+                          child: Center(
                               child: SpinKitWaveSpinner(
                             color: Color(0xfffd8b19),
                           )),
-                    ),
+                        ),
                     data: (data) {
                       return Expanded(
                         child: GridView.builder(
@@ -78,7 +78,8 @@ class HomeScreen extends ConsumerWidget {
                                                   decoration: BoxDecoration(
                                                     color: Colors.grey,
                                                     borderRadius:
-                                                        BorderRadius.circular(20),
+                                                        BorderRadius.circular(
+                                                            20),
                                                   ),
                                                 ),
                                                 Positioned(
@@ -87,8 +88,8 @@ class HomeScreen extends ConsumerWidget {
                                                     bottom: 100,
                                                     child: Text(
                                                       "Image Unavailable",
-                                                      style:
-                                                          TextStyle(fontSize: 15),
+                                                      style: TextStyle(
+                                                          fontSize: 15),
                                                     ))
                                               ],
                                             )
