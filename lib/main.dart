@@ -1,4 +1,3 @@
-import 'package:cindy_radio/presentation/screens/nav_bar_screen.dart';
 import 'package:cindy_radio/presentation/screens/onboarding.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -12,8 +11,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: NavBarScreen()
-      //OnboardingScreen(),
+      home: OnboardingScreen(),
     );
   }
 }

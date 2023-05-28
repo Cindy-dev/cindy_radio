@@ -1,3 +1,4 @@
+import 'package:cindy_radio/presentation/screens/nav_bar_screen.dart';
 import 'package:cindy_radio/utils/theme/deviceSize.dart';
 import 'package:cindy_radio/utils/theme/theme.dart';
 import 'package:flutter/cupertino.dart';
@@ -24,7 +25,7 @@ class OnboardingScreen extends StatelessWidget {
           Spacer(),
           GestureDetector(
             onTap: () => Navigator.pushReplacement(context,
-                CupertinoPageRoute(builder: (context) => HomeScreen())),
+                CupertinoPageRoute(builder: (context) => NavBarScreen())),
             child: Container(
               alignment: Alignment.center,
               margin:

@@ -1,14 +1,35 @@
+import 'package:cindy_radio/presentation/screens/home_screen.dart';
 import 'package:cindy_radio/utils/theme/theme.dart';
 import 'package:flutter/material.dart';
 
-class NavBarScreen extends StatelessWidget {
+class NavBarScreen extends StatefulWidget {
   const NavBarScreen({Key? key}) : super(key: key);
+
+  @override
+  State<NavBarScreen> createState() => _NavBarScreenState();
+}
+
+class _NavBarScreenState extends State<NavBarScreen> {
+  int _selectedIndex = 0;
+  static final List<Widget> _screenOptions = <Widget>[
+    const HomeScreen(),
+    const HomeScreen(),
+    const HomeScreen()
+  ];
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      body: _screenOptions.elementAt(_selectedIndex),
       backgroundColor: appTheme.colorScheme.secondary,
       bottomNavigationBar: BottomNavigationBar(
+        onTap: _onItemTapped,
+        currentIndex: _selectedIndex,
         type: BottomNavigationBarType.fixed,
         selectedLabelStyle: AppTextStyles.bodySemiBoldPrimary,
         unselectedLabelStyle: AppTextStyles.bodySemiBold,
