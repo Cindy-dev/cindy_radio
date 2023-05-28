@@ -62,7 +62,6 @@ ThemeData _buildLightTheme() {
         textStyle: AppTextStyles.body2Regular.copyWith(color: _Colors.black),
       ),
     ),
-
     inputDecorationTheme: InputDecorationTheme(
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(4),

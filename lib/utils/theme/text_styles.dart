@@ -33,6 +33,19 @@ class AppTextStyles {
     fontFamily: AppFont.nunitoSemiBold,
     color: _Colors.white,
   );
+  static const bodySemiBold = TextStyle(
+    fontSize: 16,
+    fontWeight: FontWeight.w600,
+    fontFamily: AppFont.nunitoSemiBold,
+    color: _Colors.gray,
+  );
+  static const bodySemiBoldPrimary = TextStyle(
+    fontSize: 16,
+    fontWeight: FontWeight.w600,
+    fontFamily: AppFont.nunitoSemiBold,
+    color: _Colors.primaryColor,
+  );
+
   static const subtitle1 = TextStyle(
     fontSize: 16,
     fontWeight: FontWeight.w500,
