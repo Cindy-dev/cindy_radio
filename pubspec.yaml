@@ -12,10 +12,9 @@ dependencies:
   dio: ^5.1.2
   audio_waveforms: ^1.0.4
   just_audio: ^0.9.33
-  audio_wave: ^0.1.5
+  cached_network_image: ^3.2.3
   flutter_riverpod: ^2.3.6
   hooks_riverpod: ^2.3.6
-  equatable: ^2.0.5
 
   cupertino_icons: ^1.0.2
 

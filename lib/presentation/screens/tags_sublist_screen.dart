@@ -1,8 +1,8 @@
+import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cindy_radio/data/model/radio_model.dart';
 import 'package:cindy_radio/presentation/widget/tags_sublist_header.dart';
-import 'package:cindy_radio/utils/app_extension.dart';
 import 'package:cindy_radio/utils/theme/deviceSize.dart';
-import 'package:flutter/material.dart';
 import '../../utils/theme/theme.dart';
 
 class TagsSubListScreen extends StatelessWidget {
@@ -51,7 +51,7 @@ class TagsSubListScreen extends StatelessWidget {
                                           borderRadius:
                                               BorderRadius.circular(20),
                                           image: DecorationImage(
-                                            image: NetworkImage(
+                                            image: CachedNetworkImageProvider(
                                               stationData.favicon!,
                                             ),
                                             fit: BoxFit.contain,
@@ -65,6 +65,7 @@ class TagsSubListScreen extends StatelessWidget {
                                       stationData.name!.trim(),
                                       style: AppTextStyles.headingSemiBold,
                                     ),
+                                    SizedBox(height: 6),
                                     Text(
                                       stationData.country!.trim(),
                                       style: AppTextStyles.subtitle2,
@@ -82,15 +83,15 @@ class TagsSubListScreen extends StatelessWidget {
                             GestureDetector(
                               onTap: () {},
                               child: Container(
-                                  height: 34,
-                                  width: 34,
+                                  padding: EdgeInsets.all(6),
+                                  alignment: Alignment.center,
                                   decoration: BoxDecoration(
                                       shape: BoxShape.circle,
                                       color: appTheme.primaryColorLight
                                           .withOpacity(0.4)),
                                   child: Icon(
                                     isPlaying ? Icons.pause : Icons.play_arrow,
-                                    size: 30,
+                                    size: 24,
                                     color: appTheme.primaryColor,
                                   )),
                             ),

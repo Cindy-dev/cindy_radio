@@ -1,10 +1,5 @@
-// To parse this JSON data, do
-//
-//     final radioModel = radioModelFromJson(jsonString);
-
 import 'dart:convert';
 
-import 'package:equatable/equatable.dart';
 
 List<RadioModel> radioModelFromJson(String str) => List<RadioModel>.from(json.decode(str).map((x) => RadioModel.fromJson(x)));
 
