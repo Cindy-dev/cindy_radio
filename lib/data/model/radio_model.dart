@@ -10,7 +10,7 @@ List<RadioModel> radioModelFromJson(String str) => List<RadioModel>.from(json.de
 
 String radioModelToJson(List<RadioModel> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
-class RadioModel extends Equatable{
+class RadioModel{
     String? changeuuid;
     String? stationuuid;
     String? serveruuid;

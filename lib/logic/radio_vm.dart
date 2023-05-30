@@ -2,14 +2,12 @@ import 'package:cindy_radio/data/repository/service/radio_api.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../data/model/radio_model.dart';
 
-
 class Tag {
   final List<RadioModel> radioModels;
   final String tags;
 
   Tag(this.radioModels, this.tags);
 }
-
 
 class RadioVm {
   final Ref ref;
@@ -20,18 +18,12 @@ class RadioVm {
     return stations;
   }
 
-  tagClickShowList(Tag tag) async {
-    final stationsWithTag = tag.radioModels
+  tagClickShowList(Tag tag) {
+    return tag.radioModels
         .where((radioModel) => radioModel.tags!.contains(tag.tags))
         .toList();
-
-    for (final station in stationsWithTag) {
-      print(station.name);
-     // return station;
-    }
   }
 }
-
 
 final radioStationsVm = FutureProvider((ref) => RadioVm(ref).fetchStations());
 

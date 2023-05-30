@@ -6,6 +6,11 @@ extension AppExtension on BuildContext{
   Color get primaryColor => appTheme.primaryColor;
   TextTheme get textTheme => Theme.of(this).textTheme;
   ColorThemeExt get colors => customTheme<ColorThemeExt>();
-
   customTheme<T>() => Theme.of(this).extension<T>();
+}
+
+extension StringExtension on String {
+  String capitalize() {
+    return "${this[0].toUpperCase()}${this.substring(1).toLowerCase()}";
+  }
 }
