@@ -1,5 +1,6 @@
 import 'package:cindy_radio/data/model/radio_model.dart';
 import 'package:cindy_radio/presentation/widget/audio_control_buttons.dart';
+import 'package:cindy_radio/utils/theme/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../logic/player_vm.dart';
@@ -40,130 +41,122 @@ class _PlayingScreenState extends ConsumerState<PlayingScreen> {
     final currentStation = widget.radioList[value];
     final deviceSize = MediaQuery.of(context).size;
     return Scaffold(
-      backgroundColor: Color(0xff1f2029),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
-          child: Column(
-            children: [
-              Row(
-                children: [
-                  GestureDetector(
-                    onTap: () {
+      body: Container(
+        height: deviceSize.height,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+              colors: [
+                Color(0xffE09D16),
+                Color(0xffC21C65),
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              stops: [0.2, 0.9]),
+        ),
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(30, 40, 30, 0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    ref
+                        .read(valueStateProvider(widget.currentIndex).notifier)
+                        .state = widget.currentIndex;
+                    Navigator.pop(context);
+                  },
+                  child: Icon(
+                    Icons.arrow_back_ios,
+                    color: appTheme.cardColor,
+                    size: 30,
+                  ),
+                ),
+                currentStation.favicon!.isEmpty
+                    ? Container(
+                        alignment: Alignment.center,
+                        margin: EdgeInsets.only(top: deviceSize.height / 13),
+                        height: deviceSize.height / 3.5,
+                        child: Text("Image Unavailable",
+                            textAlign: TextAlign.center,
+                            style: AppTextStyles.bodyMedium),
+                      )
+                    : Container(
+                        alignment: Alignment.center,
+                        margin: EdgeInsets.only(
+                            top: deviceSize.height / 13, bottom: 20),
+                        height: deviceSize.height / 3.5,
+                        child: Image.network(
+                          currentStation.favicon!,
+                          fit: BoxFit.cover,
+                        )),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: Text(
+                        currentStation.name!.trim(),
+                        textAlign: TextAlign.left,
+                        style: AppTextStyles.displayLarge,
+                      ),
+                    ),
+                    Icon(
+                      Icons.favorite_border_outlined,
+                      size: 30,
+                      color: appTheme.cardColor,
+                    ),
+                  ],
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 8),
+                  child: Text(
+                    currentStation.tags!,
+                    style: AppTextStyles.bodyMedium,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 48, bottom: 60),
+                  child: Image.asset("asset/image/wave.png"),
+                ),
+                AudioControlButtons(
+                  player: _playingViewModel!.audioPlayer,
+                  nextAudio: () {
+                    ref
+                        .read(valueStateProvider(widget.currentIndex).notifier)
+                        .state++;
+
+                    ref.read(playingViewModelProvider).goToNextAudio(
+                          radioList: widget.radioList,
+                          playingIndex: value,
+                          initializedPlayer: _playingViewModel!.audioPlayer,
+                        );
+                  },
+                  previousAudio: () {
+                    if (value > 0) {
                       ref
                           .read(
                               valueStateProvider(widget.currentIndex).notifier)
-                          .state = widget.currentIndex;
-                      Navigator.pop(context);
-                    },
-                    child: Icon(
-                      Icons.arrow_back,
-                      color: Color(0xff58585a),
-                    ),
-                  ),
-                  SizedBox(
-                    width: deviceSize.width / 3.3,
-                  ),
-                  Text(
-                    "Playing",
-                    style: TextStyle(color: Color(0xff58585a), fontSize: 25),
-                  ),
-                ],
-              ),
-              currentStation.favicon!.isEmpty
-                  ? Stack(
-                      children: [
-                        Container(
-                          alignment: Alignment.center,
-                          margin: EdgeInsets.only(top: deviceSize.height / 13),
-                          height: deviceSize.height / 2.5,
-                          width: deviceSize.width / 1.5,
-                          decoration: BoxDecoration(
-                            color: Color(0xff58585a),
-                            borderRadius: BorderRadius.circular(20),
+                          .state--;
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            'No previous audio',
+                            textAlign: TextAlign.center,
                           ),
                         ),
-                        Positioned(
-                            top: deviceSize.height / 4,
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.only(left: 60, right: 50),
-                              child: Text(
-                                "Image Unavailable",
-                                style: TextStyle(fontSize: 20),
-                              ),
-                            ))
-                      ],
-                    )
-                  : Container(
-                      height: deviceSize.height / 2.5,
-                      width: deviceSize.width / 1.5,
-                      padding: EdgeInsets.all(15),
-                      margin: EdgeInsets.only(top: deviceSize.height / 13),
-                      decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.6),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Image.network(
-                        currentStation.favicon!,
-                        fit: BoxFit.contain,
-                      )),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 20),
-                child: Text(
-                  currentStation.country ?? "ndd",
-                  style: TextStyle(
-                      color: Color(0xff58585a),
-                      fontSize: 20,
-                      fontWeight: FontWeight.w700),
+                      );
+                    }
+
+                    ref.read(playingViewModelProvider).goToPreviousAudio(
+                          playingIndex: value,
+                          radioList: widget.radioList,
+                          initializedPlayer: _playingViewModel!.audioPlayer,
+                        );
+                  },
                 ),
-              ),
-              Text(
-                currentStation.name!,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 25,
-                    fontWeight: FontWeight.w700),
-              ),
-              Spacer(),
-              AudioControlButtons(
-                player: _playingViewModel!.audioPlayer,
-                nextAudio: () {
-                  ref
-                      .read(valueStateProvider(widget.currentIndex).notifier)
-                      .state++;
-
-                  ref.read(playingViewModelProvider).goToNextAudio(
-                        radioList: widget.radioList,
-                        playingIndex: value,
-                        initializedPlayer: _playingViewModel!.audioPlayer,
-                      );
-                },
-                previousAudio: () {
-                  if (value > 0) {
-                    ref
-                        .read(valueStateProvider(widget.currentIndex).notifier)
-                        .state--;
-                  } else {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(
-                          'No previous audio',
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                    );
-                  }
-
-                  ref.read(playingViewModelProvider).goToPreviousAudio(
-                        playingIndex: value,
-                        radioList: widget.radioList,
-                        initializedPlayer: _playingViewModel!.audioPlayer,
-                      );
-                },
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

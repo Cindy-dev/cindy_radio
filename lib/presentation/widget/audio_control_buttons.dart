@@ -1,3 +1,4 @@
+import 'package:cindy_radio/utils/theme/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 
@@ -34,17 +35,18 @@ class _AudioControlButtonsState extends State<AudioControlButtons> {
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
     return Container(
-      padding: const EdgeInsets.only(bottom: 30),
+      margin: const EdgeInsets.symmetric(horizontal: 20),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           GestureDetector(
+            onTap: () {},
+            child: Image.asset("asset/image/sound.png"),
+          ),
+          SizedBox(width: 20),
+          GestureDetector(
             onTap: widget.previousAudio,
-            child: Icon(
-              Icons.skip_previous,
-              size: 70,
-              color: Color(0xff58585a),
-            ),
+            child: Image.asset("asset/image/prev.png"),
           ),
           GestureDetector(
             onTap: playOrResume,
@@ -52,24 +54,21 @@ class _AudioControlButtonsState extends State<AudioControlButtons> {
                 height: deviceSize.height / 10,
                 width: deviceSize.width / 3,
                 decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    gradient: LinearGradient(colors: [
-                      Color(0xfffeb322),
-                      Color(0xfffd8918),
-                      Color(0xfffd8b19)
-                    ])),
+                    shape: BoxShape.circle, color: appTheme.cardColor),
                 child: Icon(
                   isPlaying ? Icons.pause : Icons.play_arrow,
                   size: 50,
+                  color: Color(0xffC4255F),
                 )),
           ),
           GestureDetector(
             onTap: widget.nextAudio,
-            child: Icon(
-              Icons.skip_next,
-              size: 70,
-              color: Color(0xff58585a),
-            ),
+            child: Image.asset("asset/image/skip.png"),
+          ),
+          SizedBox(width: 20),
+          GestureDetector(
+            onTap: () {},
+            child: Image.asset("asset/image/share.png"),
           ),
         ],
       ),

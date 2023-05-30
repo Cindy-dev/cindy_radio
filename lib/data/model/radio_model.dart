@@ -4,11 +4,13 @@
 
 import 'dart:convert';
 
+import 'package:equatable/equatable.dart';
+
 List<RadioModel> radioModelFromJson(String str) => List<RadioModel>.from(json.decode(str).map((x) => RadioModel.fromJson(x)));
 
 String radioModelToJson(List<RadioModel> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
-class RadioModel {
+class RadioModel extends Equatable{
     String? changeuuid;
     String? stationuuid;
     String? serveruuid;
@@ -162,4 +164,7 @@ class RadioModel {
         "geo_long": geoLong,
         "has_extended_info": hasExtendedInfo,
     };
+
+  @override
+  List<Object?> get props => throw UnimplementedError();
 }

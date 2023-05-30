@@ -32,7 +32,7 @@ class _NavBarScreenState extends State<NavBarScreen> {
         onTap: _onItemTapped,
         currentIndex: _selectedIndex,
         type: BottomNavigationBarType.fixed,
-        selectedLabelStyle: AppTextStyles.bodySemiBoldPrimary,
+        selectedLabelStyle: AppTextStyles.bodySemiBold,
         unselectedLabelStyle: AppTextStyles.bodySemiBold,
         backgroundColor: appTheme.colorScheme.secondary,
         unselectedItemColor: appTheme.shadowColor,
