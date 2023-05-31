@@ -1,5 +1,6 @@
 import 'package:cindy_radio/presentation/screens/explore_screen.dart';
 import 'package:cindy_radio/presentation/screens/home_screen.dart';
+import 'package:cindy_radio/utils/scoped_navigator.dart';
 import 'package:cindy_radio/utils/theme/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -12,12 +13,9 @@ class NavBarScreen extends StatefulWidget {
 }
 
 class _NavBarScreenState extends State<NavBarScreen> {
+  final customNavigator = GlobalKey<NavigatorState>();
   int _selectedIndex = 0;
-  static final List<Widget> _screenOptions = <Widget>[
-    const HomeScreen(),
-    const ExploreScreen(),
-    const HomeScreen()
-  ];
+
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -29,7 +27,17 @@ class _NavBarScreenState extends State<NavBarScreen> {
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.light,
       child: Scaffold(
-        body: _screenOptions.elementAt(_selectedIndex),
+        body: [
+          const HomeScreen(),
+          ScopedNavigator(
+            navigatorKey: customNavigator,
+            defaultRoute: ScopedNavigatorChild(
+              routeName: 'explore',
+              routeWidget: const ExploreScreen(),
+            ),
+          ),
+          const HomeScreen()
+        ].elementAt(_selectedIndex),
         backgroundColor: appTheme.colorScheme.secondary,
         bottomNavigationBar: BottomNavigationBar(
           onTap: _onItemTapped,
