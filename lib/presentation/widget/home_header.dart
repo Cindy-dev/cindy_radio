@@ -6,23 +6,24 @@ class HomeHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(left: 31),
-          child: Text(
-            "Discover",
-            style: AppTextStyles.displayLarge,
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 22),
+      child: Row(
+        children: [
+         Text(
+              "Discover",
+              style: AppTextStyles.displayLarge,
+            ),
+          
+          Spacer(),
+          GestureDetector(
+            onTap: () {
+              Navigator.pop(context);
+            },
+            child: Image.asset("asset/image/search.png"),
           ),
-        ),
-        Spacer(),
-        GestureDetector(
-          onTap: () {
-            Navigator.pop(context);
-          },
-          child: Image.asset("asset/image/search.png"),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
