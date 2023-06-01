@@ -23,6 +23,14 @@ class RadioVm {
         .where((radioModel) => radioModel.tags!.contains(tag.tags))
         .toList();
   }
+
+  clickCountList() async {
+    final stations = await fetchStations();
+    if (stations.isNotEmpty) {
+      stations.sort((a, b) => b.clickcount!.compareTo(a.clickcount!));
+    } else {}
+    return stations;
+  }
 }
 
 final radioStationsVm = FutureProvider((ref) => RadioVm(ref).fetchStations());
@@ -32,6 +40,8 @@ final tagsProvider = Provider<List<String>>((ref) {
   final extractTags = ref.read(radioServiceProvider).extractTags(radioModels);
   return extractTags;
 });
+
+final clickCountVm = FutureProvider((ref) => RadioVm(ref).clickCountList());
 
 final tagClickShowListProvider =
     Provider.family((ref, Tag tag) => RadioVm(ref).tagClickShowList(tag));

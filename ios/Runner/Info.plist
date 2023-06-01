@@ -28,6 +28,11 @@
 	<string>Main</string>
 	<key>NSMicrophoneUsageDescription</key>
     <string>Can I access the microphone?</string>
+    <key>NSAppTransportSecurity</key>
+    <dict>
+      <key>NSAllowsArbitraryLoads</key>
+          <true/>
+    </dict>
 	<key>NSAppTransportSecurity</key>
     <dict>
         <key>NSAllowsArbitraryLoads</key>

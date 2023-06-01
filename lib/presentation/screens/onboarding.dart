@@ -3,10 +3,23 @@ import 'package:flutter/material.dart';
 import 'package:cindy_radio/presentation/screens/nav_bar_screen.dart';
 import 'package:cindy_radio/utils/theme/deviceSize.dart';
 import 'package:cindy_radio/utils/theme/theme.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import '../../logic/radio_vm.dart';
 
-class OnboardingScreen extends StatelessWidget {
+class OnboardingScreen extends StatefulHookConsumerWidget {
   const OnboardingScreen({Key? key}) : super(key: key);
 
+  @override
+  ConsumerState<OnboardingScreen> createState() => _OnboardingScreenState();
+}
+
+class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
+  @override
+  void initState() {
+    ref.read(clickCountVm);
+    ref.read(radioStationsVm);
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(

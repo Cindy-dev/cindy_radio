@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import '../../utils/theme/theme.dart';
 
 class HomeHeader extends StatelessWidget {
-  const HomeHeader({Key? key}) : super(key: key);
+  final String title;
+  const HomeHeader({Key? key, required this.title}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -10,11 +11,10 @@ class HomeHeader extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 22),
       child: Row(
         children: [
-         Text(
-              "Discover",
-              style: AppTextStyles.displayLarge,
-            ),
-          
+          Text(
+            title,
+            style: AppTextStyles.displayLarge,
+          ),
           Spacer(),
           GestureDetector(
             onTap: () {

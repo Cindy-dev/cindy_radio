@@ -12,7 +12,6 @@ class RadioService {
       final response = await dio.get(url);
       final radioModel = List<RadioModel>.from(
           response.data.map((x) => RadioModel.fromJson(x)));
-
       return radioModel;
     } on SocketException {
       throw Exception("Please connect to the internet");

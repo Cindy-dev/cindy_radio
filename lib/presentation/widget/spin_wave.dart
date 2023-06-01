@@ -8,7 +8,7 @@ class SpinKitWaveSpinner extends StatefulWidget {
     required this.color,
     this.trackColor = const Color(0x68757575),
     this.waveColor = const Color(0x68757575),
-    this.size = 100,
+    this.size = 50,
     this.duration = const Duration(milliseconds: 3000),
     this.curve = Curves.decelerate,
     this.child,

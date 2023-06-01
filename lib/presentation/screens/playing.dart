@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cindy_radio/data/model/radio_model.dart';
 import 'package:cindy_radio/presentation/widget/audio_control_buttons.dart';
 import 'package:cindy_radio/utils/theme/theme.dart';
@@ -73,23 +74,32 @@ class _PlayingScreenState extends ConsumerState<PlayingScreen> {
                   ),
                 ),
                 currentStation.favicon!.isEmpty
-                    ? Container(
-                        alignment: Alignment.center,
-                        margin: EdgeInsets.only(top: deviceSize.height / 13),
-                        height: deviceSize.height / 3.5,
-                        child: Text("Image Unavailable",
-                            textAlign: TextAlign.center,
-                            style: AppTextStyles.bodyMedium),
+                    ? Expanded(
+                        child: Container(
+                          alignment: Alignment.center,
+                          margin: EdgeInsets.only(top: deviceSize.height / 20),
+                          height: deviceSize.height / 2,
+                          child: Text("Image Unavailable",
+                              textAlign: TextAlign.center,
+                              style: AppTextStyles.bodyMedium),
+                        ),
                       )
-                    : Container(
-                        alignment: Alignment.center,
-                        margin: EdgeInsets.only(
-                            top: deviceSize.height / 13, bottom: 20),
-                        height: deviceSize.height / 3.5,
-                        child: Image.network(
-                          currentStation.favicon!,
-                          fit: BoxFit.cover,
-                        )),
+                    : Expanded(
+                        child: Container(
+                            alignment: Alignment.center,
+                            margin: EdgeInsets.only(
+                                top: deviceSize.height / 20, bottom: 20),
+                            height: deviceSize.height / 2,
+                            width: deviceSize.width,
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: CachedNetworkImageProvider(
+                                  currentStation.favicon!,
+                                ),
+                                fit: BoxFit.cover,
+                              ),
+                            )),
+                      ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -111,6 +121,7 @@ class _PlayingScreenState extends ConsumerState<PlayingScreen> {
                   padding: const EdgeInsets.only(top: 8),
                   child: Text(
                     currentStation.tags!,
+                    overflow: TextOverflow.ellipsis,
                     style: AppTextStyles.bodyMedium,
                   ),
                 ),
@@ -155,6 +166,9 @@ class _PlayingScreenState extends ConsumerState<PlayingScreen> {
                         );
                   },
                 ),
+                SizedBox(
+                  height: deviceSize.height / 50,
+                )
               ],
             ),
           ),
