@@ -1,5 +1,6 @@
 import 'package:cindy_radio/presentation/screens/explore_screen.dart';
 import 'package:cindy_radio/presentation/screens/onboarding.dart';
+import 'package:cindy_radio/presentation/screens/test.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -14,7 +15,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       initialRoute: '/',
       routes: {
-        '/': (context) => const OnboardingScreen(),
+        '/': (context) => OnboardingScreen(),
         '/explore': (context) => const ExploreScreen(),
       },
     );

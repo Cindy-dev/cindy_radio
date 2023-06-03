@@ -3,9 +3,11 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cindy_radio/data/model/radio_model.dart';
 import 'package:cindy_radio/presentation/widget/tags_sublist_header.dart';
 import 'package:cindy_radio/utils/theme/deviceSize.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../logic/player_vm.dart';
 import '../../utils/theme/theme.dart';
 
-class TagsSubListScreen extends StatelessWidget {
+class TagsSubListScreen extends ConsumerStatefulWidget {
   final String stationName;
   final List<RadioModel> station;
   const TagsSubListScreen(
@@ -13,8 +15,44 @@ class TagsSubListScreen extends StatelessWidget {
       : super(key: key);
 
   @override
+  ConsumerState<TagsSubListScreen> createState() => _TagsSubListScreenState();
+}
+
+class _TagsSubListScreenState extends ConsumerState<TagsSubListScreen> {
+  PlayerVm? _playingViewModel;
+  int currentlyPlayingIndex = -1;
+  @override
+  void initState() {
+    super.initState();
+    _playingViewModel = ref.read(playingViewModelProvider);
+  }
+
+  @override
+  void dispose() {
+    _playingViewModel?.dispose();
+    super.dispose();
+  }
+  void playOrResume(String audioUrl, int index) {
+    final player = _playingViewModel?.audioPlayer;
+    setState(() {
+      if (currentlyPlayingIndex == index) {
+        // Stop the currently playing audio
+        currentlyPlayingIndex = -1;
+        player?.stop();
+      } else {
+        // Stop the previously playing audio, if any
+        if (currentlyPlayingIndex != -1) {
+          player?.stop();
+        }
+        // Start playing the new audio
+        currentlyPlayingIndex = index;
+        _playingViewModel?.playAudio(audioUrl);
+      }
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    bool isPlaying = false;
     return Scaffold(
       backgroundColor: appTheme.colorScheme.secondary,
       body: SafeArea(
@@ -23,19 +61,19 @@ class TagsSubListScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            TagsSublistHeader(stationName: stationName),
+            TagsSublistHeader(stationName: widget.stationName),
             Expanded(
               child: ListView.builder(
                   shrinkWrap: true,
-                  itemCount: station.length,
+                  itemCount: widget.station.length,
                   itemBuilder: (context, i) {
-                    final stationData = station[i];
+                    final stationData = widget.station[i];
                     return Row(
                       children: [
                         Expanded(
                           child: Row(
                             children: [
-                              station[i].favicon == ""
+                              widget.station[i].favicon == ""
                                   ? Container(
                                       height: context.deviceHeight() / 10,
                                       width: context.deviceWidth() / 4,
@@ -81,7 +119,9 @@ class TagsSubListScreen extends StatelessWidget {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             GestureDetector(
-                              onTap: () {},
+                              onTap: () {
+                                playOrResume(stationData.url!, i);
+                              },
                               child: Container(
                                   padding: EdgeInsets.all(6),
                                   alignment: Alignment.center,
@@ -90,7 +130,9 @@ class TagsSubListScreen extends StatelessWidget {
                                       color: appTheme.primaryColorLight
                                           .withOpacity(0.4)),
                                   child: Icon(
-                                    isPlaying ? Icons.pause : Icons.play_arrow,
+                                    currentlyPlayingIndex == i
+                                        ? Icons.pause
+                                        : Icons.play_arrow,
                                     size: 24,
                                     color: appTheme.primaryColor,
                                   )),

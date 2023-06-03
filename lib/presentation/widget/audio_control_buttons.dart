@@ -36,41 +36,45 @@ class _AudioControlButtonsState extends State<AudioControlButtons> {
     final deviceSize = MediaQuery.of(context).size;
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 20),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          GestureDetector(
-            onTap: () {},
-            child: Image.asset("asset/image/sound.png"),
-          ),
-          SizedBox(width: 20),
-          GestureDetector(
-            onTap: widget.previousAudio,
-            child: Image.asset("asset/image/prev.png"),
-          ),
-          GestureDetector(
-            onTap: playOrResume,
-            child: Container(
-                height: deviceSize.height / 10,
-                width: deviceSize.width / 3,
-                decoration: BoxDecoration(
-                    shape: BoxShape.circle, color: appTheme.cardColor),
-                child: Icon(
-                  isPlaying ? Icons.pause : Icons.play_arrow,
-                  size: 50,
-                  color: Color(0xffC4255F),
-                )),
-          ),
-          GestureDetector(
-            onTap: widget.nextAudio,
-            child: Image.asset("asset/image/skip.png"),
-          ),
-          SizedBox(width: 20),
-          GestureDetector(
-            onTap: () {},
-            child: Image.asset("asset/image/share.png"),
-          ),
-        ],
+      child: FittedBox(
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            GestureDetector(
+              onTap: () {
+              },
+              child: Image.asset("asset/image/sound.png"),
+            ),
+            SizedBox(width: 20),
+            GestureDetector(
+              onTap: widget.previousAudio,
+              child: Image.asset("asset/image/prev.png"),
+            ),
+            GestureDetector(
+              onTap: playOrResume,
+              child: Container(
+                  height: deviceSize.height / 10,
+                  width: deviceSize.width / 3,
+                  decoration: BoxDecoration(
+                      shape: BoxShape.circle, color: appTheme.cardColor),
+                  child: Icon(
+                    isPlaying ? Icons.pause : Icons.play_arrow,
+                    size: 50,
+                    color: Color(0xffC4255F),
+                  )),
+            ),
+            GestureDetector(
+              onTap: widget.nextAudio,
+              child: Image.asset("asset/image/skip.png"),
+            ),
+            SizedBox(width: 20),
+            GestureDetector(
+              onTap: () {},
+              child: Image.asset("asset/image/share.png"),
+            ),
+          ],
+        ),
       ),
     );
   }

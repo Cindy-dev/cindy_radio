@@ -21,7 +21,9 @@ class HomeScreen extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          HomeHeader(title: "Discover",),
+          HomeHeader(
+            title: "Discover",
+          ),
           Padding(
             padding: const EdgeInsets.only(left: 22),
             child: Column(
@@ -55,7 +57,7 @@ class HomeScreen extends ConsumerWidget {
                                         image: data?.favicon != null &&
                                                 data!.favicon!.isNotEmpty
                                             ? CachedNetworkImageProvider(
-                                                    data!.favicon!.toString())
+                                                    data.favicon!.toString())
                                                 as ImageProvider<Object>
                                             : AssetImage(
                                                 "asset/image/default.png"),
@@ -72,8 +74,7 @@ class HomeScreen extends ConsumerWidget {
                                   ),
                                   Expanded(
                                     child: Text(
-                                      "${data?.state}${data?.country}".trim() ??
-                                          "",
+                                      "${data?.state}${data?.country}".trim(),
                                       style: AppTextStyles.subtitle1,
                                     ),
                                   ),
@@ -83,7 +84,12 @@ class HomeScreen extends ConsumerWidget {
                           }),
                     );
                   },
-                  error: (e, s) => Text(e.toString()),
+                  error: (e, s) => Container(
+                      margin: EdgeInsets.only(top: 24, right: 22),
+                      width: context.deviceWidth(),
+                      height: context.deviceHeight() / 3.5,
+                      child: Text(e.toString(),
+                          style: AppTextStyles.headingSemiBold)),
                   loading: () => Container(
                     margin: EdgeInsets.only(top: 24),
                     width: context.deviceWidth(),
@@ -102,7 +108,14 @@ class HomeScreen extends ConsumerWidget {
             child: Text("Trending Stations", style: AppTextStyles.heading3Bold),
           ),
           vm.when(
-              error: (e, s) => Expanded(child: Text(e.toString())),
+              error: (e, s) => Expanded(
+                      child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 22),
+                    child: Text(
+                      e.toString(),
+                      style: AppTextStyles.headingSemiBold,
+                    ),
+                  )),
               loading: () => Expanded(
                     child: Center(
                         child: SpinKitWaveSpinner(

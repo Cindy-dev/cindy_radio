@@ -30,7 +30,7 @@ flutter:
   assets:
     - asset/image/
     - asset/image/screenshot/
-  #   - images/a_dot_ham.jpeg
+    - asset/image/stationImage/
 
   fonts:
     - family: Nunito

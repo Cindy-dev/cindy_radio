@@ -22,7 +22,6 @@ class PlayingScreen extends StatefulHookConsumerWidget {
 
 class _PlayingScreenState extends ConsumerState<PlayingScreen> {
   PlayerVm? _playingViewModel;
-
   @override
   void initState() {
     super.initState();
