@@ -30,8 +30,8 @@ class _FavoriteScreenState extends ConsumerState<FavoriteScreen> {
             HomeHeader(title: "Favorites"),
             vm.when(
                 data: (data) {
-                  return faveLength.isNotEmpty
-                      ? Expanded(
+                  return
+                       Expanded(
                           child: ListView.builder(
                             shrinkWrap: true,
                             itemCount: data.length,
@@ -97,10 +97,10 @@ class _FavoriteScreenState extends ConsumerState<FavoriteScreen> {
                                     children: [
                                       GestureDetector(
                                         onTap: () => removeFromFaveDialog(
-                                            context, stationData.name, () {
-                                          ref
-                                              .read(favoriteStationVM.notifier)
-                                              .addToFavorite(stationData);
+                                            context, stationData.name!, () {
+// ref
+//     .read(favoriteStationVM.notifier)
+//     .addToFavorite(stationData,1);
                                           Navigator.pop(context);
                                           setState(() {});
                                         }),
@@ -123,17 +123,17 @@ class _FavoriteScreenState extends ConsumerState<FavoriteScreen> {
                               );
                             },
                           ),
-                        )
-                      : Expanded(
-                          child: Center(
-                            child: Text("Favorite List is Empty",
-                                style: AppTextStyles.heading3Bold),
-                          ),
                         );
+                      // : Expanded(
+                      //     child: Center(
+                      //       child: Text("Favorite List is Empty",
+                      //           style: AppTextStyles.heading3Bold),
+                      //     ),
+                      //   );
                 },
                 error: (e, s) {
                   final error = vm.error.toString();
-                  return Text(error);
+                  return Text(error,style: AppTextStyles.bodyMedium,);
                 },
                 loading: () => CircularProgressIndicator())
           ],
@@ -142,3 +142,112 @@ class _FavoriteScreenState extends ConsumerState<FavoriteScreen> {
     );
   }
 }
+
+// vm.when(
+// data: (data) {
+// return faveLength.isNotEmpty
+// ? Expanded(
+// child: ListView.builder(
+// shrinkWrap: true,
+// itemCount: data.length,
+// itemBuilder: (context, i) {
+// final stationData = data[i];
+// return Row(
+// children: [
+// Expanded(
+// child: Row(
+// children: [
+// stationData.favicon == ""
+// ? Container(
+// height:
+// context.deviceHeight() / 10,
+// width:
+// context.deviceWidth() / 4,
+// margin: EdgeInsets.only(
+// bottom: 24, right: 14),
+// )
+//     : Container(
+// margin: EdgeInsets.only(
+// bottom: 24, right: 14),
+// height:
+// context.deviceHeight() / 10,
+// width:
+// context.deviceWidth() / 4,
+// decoration: BoxDecoration(
+// borderRadius:
+// BorderRadius.circular(20),
+// image: DecorationImage(
+// image:
+// CachedNetworkImageProvider(
+// stationData.favicon!,
+// ),
+// fit: BoxFit.contain,
+// ),
+// ),
+// ),
+// Expanded(
+// child: Column(
+// crossAxisAlignment:
+// CrossAxisAlignment.start,
+// children: [
+// Text(
+// stationData.name!.trim(),
+// style: AppTextStyles
+//     .headingSemiBold,
+// ),
+// SizedBox(height: 6),
+// Text(
+// stationData.country!.trim(),
+// style: AppTextStyles.subtitle2,
+// )
+// ],
+// ),
+// ),
+// ],
+// ),
+// ),
+// SizedBox(width: context.deviceWidth() / 17),
+// Row(
+// mainAxisSize: MainAxisSize.min,
+// children: [
+// GestureDetector(
+// onTap: () => removeFromFaveDialog(
+// context, stationData.name, () {
+// // ref
+// //     .read(favoriteStationVM.notifier)
+// //     .addToFavorite(stationData,1);
+// Navigator.pop(context);
+// setState(() {});
+// }),
+// child: Icon(
+// Icons.favorite,
+// size: 24,
+// color: appTheme.primaryColor,
+// ),
+// ),
+// SizedBox(
+// width: context.deviceWidth() / 22),
+// Icon(
+// Icons.more_vert,
+// size: 30,
+// color: appTheme.cardColor,
+// )
+// ],
+// )
+// ],
+// );
+// },
+// ),
+// )
+//     : Expanded(
+// child: Center(
+// child: Text("Favorite List is Empty",
+// style: AppTextStyles.heading3Bold),
+// ),
+// );
+// },
+// error: (e, s) {
+// final error = vm.error.toString();
+// return Text(error);
+// },
+// loading: () => CircularProgressIndicator())

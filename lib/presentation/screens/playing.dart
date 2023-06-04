@@ -113,9 +113,16 @@ class _PlayingScreenState extends ConsumerState<PlayingScreen> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        ref
-                            .read(favoriteStationVM.notifier)
-                            .addToFavorite(currentStation);
+                        ref.read(favoriteStationVM.notifier).addToFavorite(
+                              stationuuid: currentStation.stationuuid!,
+                              url: currentStation.url!,
+                              name: currentStation.name!,
+                              clickcount: currentStation.clickcount!.toInt(),
+                              countrycode: currentStation.countrycode!,
+                              favicon: currentStation.favicon!,
+                              country: currentStation.country!,
+                              tags: currentStation.tags!,
+                            );
                         setState(() {});
                       },
                       child: ref
