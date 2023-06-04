@@ -7,6 +7,7 @@ class RadioService {
   final dio = Dio();
 
   Future<List<RadioModel>> fetchStations() async {
+    dio.options.connectTimeout = Duration(seconds: 30);
     final url = "https://de1.api.radio-browser.info/json/stations";
     try {
       final response = await dio.get(url);

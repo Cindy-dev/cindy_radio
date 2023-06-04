@@ -13,6 +13,7 @@ class TagData {
     'asset/image/stationImage/station8.png',
     'asset/image/stationImage/station9.png',
     'asset/image/stationImage/station10.png',
+    'asset/image/stationImage/station11.png',
   ];
   static Map<String, String> getImageMapping(List<String> tagStrings) {
     Map<String, String> imageMapping = {};

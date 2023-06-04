@@ -1,3 +1,5 @@
+import 'package:cindy_radio/data/model/radio_model.dart';
+import 'package:cindy_radio/utils/app_data.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

@@ -32,6 +32,7 @@ class _TagsSubListScreenState extends ConsumerState<TagsSubListScreen> {
     _playingViewModel?.dispose();
     super.dispose();
   }
+
   void playOrResume(String audioUrl, int index) {
     final player = _playingViewModel?.audioPlayer;
     setState(() {

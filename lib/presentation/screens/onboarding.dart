@@ -16,10 +16,15 @@ class OnboardingScreen extends StatefulHookConsumerWidget {
 class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   @override
   void initState() {
-    ref.read(clickCountVm);
-    ref.read(radioStationsVm);
+    init();
     super.initState();
   }
+
+  void init() async {
+    await ref.read(clickCountVm).value;
+    ref.read(radioStationsVm).value;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

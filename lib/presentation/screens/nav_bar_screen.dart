@@ -1,4 +1,5 @@
 import 'package:cindy_radio/presentation/screens/explore_screen.dart';
+import 'package:cindy_radio/presentation/screens/favorite_screen.dart';
 import 'package:cindy_radio/presentation/screens/home_screen.dart';
 import 'package:cindy_radio/utils/scoped_navigator.dart';
 import 'package:cindy_radio/utils/theme/theme.dart';
@@ -36,7 +37,7 @@ class _NavBarScreenState extends State<NavBarScreen> {
               routeWidget: const ExploreScreen(),
             ),
           ),
-          const HomeScreen()
+          const FavoriteScreen()
         ].elementAt(_selectedIndex),
         backgroundColor: appTheme.colorScheme.secondary,
         bottomNavigationBar: BottomNavigationBar(

@@ -1,9 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cindy_radio/data/model/radio_model.dart';
+import 'package:cindy_radio/logic/favorite_stations_vm.dart';
 import 'package:cindy_radio/presentation/widget/audio_control_buttons.dart';
 import 'package:cindy_radio/utils/theme/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import '../../data/repository/service/favorite_radio_service.dart';
 import '../../logic/player_vm.dart';
 
 class PlayingScreen extends StatefulHookConsumerWidget {
@@ -109,10 +111,17 @@ class _PlayingScreenState extends ConsumerState<PlayingScreen> {
                         style: AppTextStyles.displayLarge,
                       ),
                     ),
-                    Icon(
-                      Icons.favorite_border_outlined,
-                      size: 30,
-                      color: appTheme.cardColor,
+                    GestureDetector(
+                      onTap: () {
+                        ref
+                            .read(favoriteStationVM.notifier)
+                            .addToFavorite(currentStation);
+                      },
+                      child: Icon(
+                        Icons.favorite_border_outlined,
+                        size: 30,
+                        color: appTheme.cardColor,
+                      ),
                     ),
                   ],
                 ),

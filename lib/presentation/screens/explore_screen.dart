@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cindy_radio/data/repository/tagData.dart';
 import 'package:cindy_radio/logic/radio_vm.dart';
 import 'package:cindy_radio/presentation/screens/tags_sublist_screen.dart';
@@ -70,7 +69,7 @@ class ExploreScreen extends ConsumerWidget {
                                             MaterialPageRoute(
                                               builder: (_) => TagsSubListScreen(
                                                 station: stationsWithTag,
-                                                stationName: vm[i],
+                                                stationName: tag,
                                               ),
                                             ),
                                           );
@@ -88,7 +87,7 @@ class ExploreScreen extends ConsumerWidget {
                                                   image: DecorationImage(
                                                     image: AssetImage(
                                                       imageMapping[
-                                                              vm[i].trim()] ??
+                                                              tag.trim()] ??
                                                           "assets/image/default.png",
                                                     ),
                                                     fit: BoxFit.fitWidth,
@@ -106,7 +105,7 @@ class ExploreScreen extends ConsumerWidget {
                                         ),
                                       ),
                                       Text(
-                                        vm[i].trim(),
+                                        tag.trim(),
                                         overflow: TextOverflow.ellipsis,
                                         style: AppTextStyles.heading3Bold,
                                       ),
