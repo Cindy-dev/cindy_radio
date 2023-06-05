@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cindy_radio/data/model/radio_model.dart';
 import 'package:cindy_radio/data/repository/service/favorite_radio_service.dart';
 import 'package:cindy_radio/logic/favorite_stations_vm.dart';
+import 'package:cindy_radio/logic/recently_played_vm.dart';
 import 'package:cindy_radio/presentation/widget/audio_control_buttons.dart';
 import 'package:cindy_radio/utils/theme/theme.dart';
 import 'package:flutter/material.dart';
@@ -42,6 +43,7 @@ class _PlayingScreenState extends ConsumerState<PlayingScreen> {
     final value = ref.watch(valueStateProvider(widget.currentIndex));
     final currentStation = widget.radioList[value];
     final deviceSize = MediaQuery.of(context).size;
+
     return Scaffold(
       body: Container(
         height: deviceSize.height,
@@ -61,6 +63,7 @@ class _PlayingScreenState extends ConsumerState<PlayingScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+
                 GestureDetector(
                   onTap: () {
                     ref
@@ -112,42 +115,42 @@ class _PlayingScreenState extends ConsumerState<PlayingScreen> {
                       ),
                     ),
                     GestureDetector(
-                        onTap: () {
-                          ref.read(favoriteStationVM.notifier).addToFavorite(
-                                stationuuid: currentStation.stationuuid!,
-                                url: currentStation.url!,
-                                name: currentStation.name!,
-                                clickcount: currentStation.clickcount!.toInt(),
-                                countrycode: currentStation.countrycode!,
-                                favicon: currentStation.favicon!,
-                                country: currentStation.country!,
-                                tags: currentStation.tags!,
-                              );
-                          setState(() {});
+                      onTap: () {
+                        ref.read(favoriteStationVM.notifier).addToFavorite(
+                              stationuuid: currentStation.stationuuid!,
+                              url: currentStation.url!,
+                              name: currentStation.name!,
+                              clickcount: currentStation.clickcount!.toInt(),
+                              countrycode: currentStation.countrycode!,
+                              favicon: currentStation.favicon!,
+                              country: currentStation.country!,
+                              tags: currentStation.tags!,
+                            );
+                        setState(() {});
+                      },
+                      child: FutureBuilder<bool>(
+                        future: ref
+                            .watch(favoriteRadioStationServiceProvider)
+                            .existingItemFave(currentStation.stationuuid!),
+                        builder: (BuildContext context,
+                            AsyncSnapshot<bool> snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                          } else if (snapshot.hasData) {
+                            return snapshot.data!
+                                ? Icon(
+                                    Icons.favorite_border_outlined,
+                                    size: 30,
+                                    color: appTheme.cardColor,
+                                  )
+                                : Icon(Icons.favorite,
+                                    size: 30, color: appTheme.primaryColor);
+                          } else {
+                            return Text('Error retrieving data');
+                          }
+                          return Container();
                         },
-                        child: FutureBuilder<bool>(
-                          future: ref
-                              .watch(favoriteRadioStationServiceProvider)
-                              .existingItemFave(currentStation.stationuuid!),
-                          builder: (BuildContext context,
-                              AsyncSnapshot<bool> snapshot) {
-                            if (snapshot.connectionState ==
-                                ConnectionState.waiting) {
-                            } else if (snapshot.hasData) {
-                              return snapshot.data!
-                                  ? Icon(
-                                      Icons.favorite_border_outlined,
-                                      size: 30,
-                                      color: appTheme.cardColor,
-                                    )
-                                  : Icon(Icons.favorite,
-                                      size: 30, color: appTheme.primaryColor);
-                            } else {
-                              return Text('Error retrieving data');
-                            }
-                            return Container();
-                          },
-                        ),
+                      ),
                     ),
                   ],
                 ),
