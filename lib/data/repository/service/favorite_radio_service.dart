@@ -1,4 +1,3 @@
-import 'package:cindy_radio/data/model/radio_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
@@ -63,6 +62,14 @@ class FavoriteRadioService {
       print("object");
       // If the product already exists, do nothing
     }
+  }
+
+   Future<bool> existingItemFave(String stationuuid) async {
+    final isar = await openIsar();
+    final favoriteDB = isar.favoriteDBs;
+    final existingItem =
+        favoriteDB.where().filter().stationuuidContains(stationuuid);
+    return existingItem.isEmptySync();
   }
 
   Stream<List<FavoriteDB>> getAllFavorites() async* {

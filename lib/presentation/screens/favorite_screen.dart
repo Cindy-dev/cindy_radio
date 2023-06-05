@@ -27,109 +27,118 @@ class _FavoriteScreenState extends ConsumerState<FavoriteScreen> {
             HomeHeader(title: "Favorites"),
             vm.when(
                 data: (data) {
-                  return Expanded(
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: data.length,
-                      itemBuilder: (context, i) {
-                        final stationData = data[i];
-                        return Row(
-                          children: [
-                            Expanded(
-                              child: Row(
+                  return data.isNotEmpty
+                      ? Expanded(
+                          child: ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: data.length,
+                            itemBuilder: (context, i) {
+                              final stationData = data[i];
+                              return Row(
                                 children: [
-                                  stationData.favicon == ""
-                                      ? Container(
-                                          height: context.deviceHeight() / 10,
-                                          width: context.deviceWidth() / 4,
-                                          margin: EdgeInsets.only(
-                                              bottom: 24, right: 14),
-                                        )
-                                      : Container(
-                                          margin: EdgeInsets.only(
-                                              bottom: 24, right: 14),
-                                          height: context.deviceHeight() / 10,
-                                          width: context.deviceWidth() / 4,
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(20),
-                                            image: DecorationImage(
-                                              image: CachedNetworkImageProvider(
-                                                stationData.favicon!,
+                                  Expanded(
+                                    child: Row(
+                                      children: [
+                                        stationData.favicon == ""
+                                            ? Container(
+                                                height:
+                                                    context.deviceHeight() / 10,
+                                                width:
+                                                    context.deviceWidth() / 4,
+                                                margin: EdgeInsets.only(
+                                                    bottom: 24, right: 14),
+                                              )
+                                            : Container(
+                                                margin: EdgeInsets.only(
+                                                    bottom: 24, right: 14),
+                                                height:
+                                                    context.deviceHeight() / 10,
+                                                width:
+                                                    context.deviceWidth() / 4,
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(20),
+                                                  image: DecorationImage(
+                                                    image:
+                                                        CachedNetworkImageProvider(
+                                                      stationData.favicon!,
+                                                    ),
+                                                    fit: BoxFit.contain,
+                                                  ),
+                                                ),
                                               ),
-                                              fit: BoxFit.contain,
-                                            ),
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                stationData.name!.trim(),
+                                                style: AppTextStyles
+                                                    .headingSemiBold,
+                                              ),
+                                              SizedBox(height: 6),
+                                              Text(
+                                                stationData.country!.trim(),
+                                                style: AppTextStyles.subtitle2,
+                                              )
+                                            ],
                                           ),
                                         ),
-                                  Expanded(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          stationData.name!.trim(),
-                                          style: AppTextStyles.headingSemiBold,
-                                        ),
-                                        SizedBox(height: 6),
-                                        Text(
-                                          stationData.country!.trim(),
-                                          style: AppTextStyles.subtitle2,
-                                        )
                                       ],
                                     ),
                                   ),
+                                  SizedBox(width: context.deviceWidth() / 17),
+                                  Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      GestureDetector(
+                                        onTap: () => removeFromFaveDialog(
+                                            context, stationData.name!, () {
+                                          ref
+                                              .read(favoriteStationVM.notifier)
+                                              .addToFavorite(
+                                                  stationuuid:
+                                                      stationData.stationuuid!,
+                                                  url: stationData.url!,
+                                                  name: stationData.name!,
+                                                  clickcount:
+                                                      stationData.clickcount!,
+                                                  country: stationData.country!,
+                                                  countrycode:
+                                                      stationData.countrycode!,
+                                                  favicon: stationData.favicon!,
+                                                  tags: stationData.tags!,
+                                                  id: stationData.id);
+                                          Navigator.pop(context);
+                                          setState(() {});
+                                        }),
+                                        child: Icon(
+                                          Icons.favorite,
+                                          size: 24,
+                                          color: appTheme.primaryColor,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                          width: context.deviceWidth() / 22),
+                                      Icon(
+                                        Icons.more_vert,
+                                        size: 30,
+                                        color: appTheme.cardColor,
+                                      )
+                                    ],
+                                  )
                                 ],
-                              ),
-                            ),
-                            SizedBox(width: context.deviceWidth() / 17),
-                            Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                GestureDetector(
-                                  onTap: () => removeFromFaveDialog(
-                                      context, stationData.name!, () {
-                                    ref
-                                        .read(favoriteStationVM.notifier)
-                                        .addToFavorite(
-                                            stationuuid:
-                                                stationData.stationuuid!,
-                                            url: stationData.url!,
-                                            name: stationData.name!,
-                                            clickcount: stationData.clickcount!,
-                                            country: stationData.country!,
-                                            countrycode:
-                                                stationData.countrycode!,
-                                            favicon: stationData.favicon!,
-                                            tags: stationData.tags!,
-                                            id: stationData.id);
-                                    Navigator.pop(context);
-                                    setState(() {});
-                                  }),
-                                  child: Icon(
-                                    Icons.favorite,
-                                    size: 24,
-                                    color: appTheme.primaryColor,
-                                  ),
-                                ),
-                                SizedBox(width: context.deviceWidth() / 22),
-                                Icon(
-                                  Icons.more_vert,
-                                  size: 30,
-                                  color: appTheme.cardColor,
-                                )
-                              ],
-                            )
-                          ],
+                              );
+                            },
+                          ),
+                        )
+                      : Expanded(
+                          child: Center(
+                            child: Text("Favorite List is Empty",
+                                style: AppTextStyles.heading3Bold),
+                          ),
                         );
-                      },
-                    ),
-                  );
-                  // : Expanded(
-                  //     child: Center(
-                  //       child: Text("Favorite List is Empty",
-                  //           style: AppTextStyles.heading3Bold),
-                  //     ),
-                  //   );
                 },
                 error: (e, s) {
                   final error = vm.error.toString();
