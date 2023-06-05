@@ -36,16 +36,17 @@ class FavoriteStationVM extends StateNotifier<FavoriteStationState> {
   final Ref ref;
   FavoriteStationVM(this.ref) : super(const FavoriteStationInitial());
 
-  addToFavorite(
-      {required String stationuuid,
-      required String url,
-      required String name,
-      required int clickcount,
-      required String country,
-      required String countrycode,
-      required String favicon,
-      required String tags,
-     }) {
+  addToFavorite({
+    required String stationuuid,
+    required String url,
+    required String name,
+    required int clickcount,
+    required String country,
+    required String countrycode,
+    required String favicon,
+    required String tags,
+    int? id,
+  }) {
     state = const FavoriteStationLoading();
     try {
       final result =
@@ -58,19 +59,9 @@ class FavoriteStationVM extends StateNotifier<FavoriteStationState> {
                 countrycode: countrycode,
                 tags: tags,
                 favicon: favicon,
+                id: id
               );
       state = FavoriteStationAdded(result);
-    } catch (e) {
-      state = FavoriteStationError(e.toString());
-    }
-  }
-
-  fetchFavoriteStations() {
-    state = const FavoriteStationLoading();
-    try {
-      final result = ref.read(favoriteRadioStationServiceProvider).getAllFavorites();
-      state = FavoriteStationLoaded(result);
-      return result;
     } catch (e) {
       state = FavoriteStationError(e.toString());
     }
@@ -82,6 +73,7 @@ final favoriteStationVM =
         (ref) => FavoriteStationVM(ref));
 
 final fetchFavoriteStationVM = StreamProvider<List<FavoriteDB>>((ref) {
-  final faveStations = ref.watch(favoriteRadioStationServiceProvider).getAllFavorites();
+  final faveStations =
+      ref.watch(favoriteRadioStationServiceProvider).getAllFavorites();
   return faveStations;
 });

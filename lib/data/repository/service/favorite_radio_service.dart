@@ -31,10 +31,6 @@ class FavoriteRadioService {
     isar.writeTxnSync<int>(() => isar.favoriteDBs.putSync(newStation));
   }
 
-  final List<RadioModel> faveStations = [];
-
-  List<RadioModel> get faveModels => faveStations;
-
   addFavoriteItem({
     required String stationuuid,
     required String url,
@@ -45,10 +41,13 @@ class FavoriteRadioService {
     required String favicon,
     required String tags,
   }) async {
+    final isar = await openIsar();
+    final favoriteDB = isar.favoriteDBs;
     // Check if the product already exists in the favorite list
-    bool exists = faveStations.any((item) => item.stationuuid == stationuuid);
+    final existingItem =
+        await favoriteDB.where().sortByStationuuid().findFirst();
 
-    if (!exists) {
+    if (existingItem == null) {
       // If the station doesn't exist, add it to the list
       final favoriteStation = FavoriteDB()
         ..stationuuid = stationuuid
@@ -60,9 +59,8 @@ class FavoriteRadioService {
         ..favicon = favicon
         ..tags = tags;
       createTask(favoriteStation);
-
-      //faveStations.add(newStation);
     } else {
+      print("object");
       // If the product already exists, do nothing
     }
   }
@@ -82,27 +80,29 @@ class FavoriteRadioService {
       required String favicon,
       required String tags,
       int? id}) async {
-    bool exists = faveStations.any((item) => item.stationuuid == stationuuid);
+    final isar = await openIsar();
+    final favoriteDB = isar.favoriteDBs;
 
-    if (!exists) {
+    final existingItem =
+        favoriteDB.where().filter().stationuuidContains(stationuuid);
+
+    if (existingItem.isEmptySync()) {
       // Insert or update station
-      addFavoriteItem(
-          stationuuid: stationuuid,
-          url: url,
-          name: name,
-          clickcount: clickcount,
-          country: country,
-          countrycode: countrycode,
-          favicon: favicon,
-          tags: tags);
-      //faveStations.add(newStation);
+      final favoriteStation = FavoriteDB()
+        ..stationuuid = stationuuid
+        ..url = url
+        ..name = name
+        ..clickcount = clickcount
+        ..country = country
+        ..countrycode = countrycode
+        ..favicon = favicon
+        ..tags = tags;
+      createTask(favoriteStation);
     } else {
       final isar = await openIsar();
       final itemIdToDelete = id!; // user-selected id
       await isar.writeTxn(() async {
         await isar.favoriteDBs.delete(itemIdToDelete);
-        // faveStations
-        //   .removeWhere((item) => item.stationuuid == newStation.stationuuid);
       });
     }
   }

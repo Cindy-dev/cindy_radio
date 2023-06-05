@@ -125,19 +125,21 @@ class _PlayingScreenState extends ConsumerState<PlayingScreen> {
                             );
                         setState(() {});
                       },
-                      child: ref
-                              .watch(favoriteRadioStationServiceProvider)
-                              .faveModels
-                              .any((item) =>
-                                  item.stationuuid ==
-                                  currentStation.stationuuid)
-                          ? Icon(Icons.favorite,
-                              size: 30, color: appTheme.primaryColor)
-                          : Icon(
-                              Icons.favorite_border_outlined,
-                              size: 30,
-                              color: appTheme.cardColor,
-                            ),
+                      child:
+                          // ref
+                          //         .watch(favoriteRadioStationServiceProvider)
+                          //         .faveModels
+                          //         .any((item) =>
+                          //             item.stationuuid ==
+                          //             currentStation.stationuuid)
+                          //     ? Icon(Icons.favorite,
+                          //         size: 30, color: appTheme.primaryColor)
+                          //     :
+                          Icon(
+                        Icons.favorite_border_outlined,
+                        size: 30,
+                        color: appTheme.cardColor,
+                      ),
                     ),
                   ],
                 ),
