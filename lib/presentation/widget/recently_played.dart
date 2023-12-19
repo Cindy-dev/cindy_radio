@@ -26,7 +26,6 @@ class RecentlyPlayed extends ConsumerWidget {
                           scrollDirection: Axis.horizontal,
                           itemCount: recentStations.length,
                           itemBuilder: (context, i) {
-                            print(recentStations.length);
                             final data = recentStations[i];
                             return Container(
                               width: context.deviceWidth() / 2.3,

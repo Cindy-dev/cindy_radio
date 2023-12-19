@@ -44,7 +44,6 @@ class RecentlyPlayedService {
         ..tags = tags;
       createRecentlyPlayed(recentlyPlayedStation);
     } else {
-      print("avail");
       // If the product already exists, do nothing
     }
   }
